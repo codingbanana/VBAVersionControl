@@ -71,9 +71,10 @@ With tgtWB.VBProject.VBComponents
     .Remove TempVBComp
 End With
 
-tgtWB.Close savechanges:=True
+tgtWB.Save
 MsgBox "Version Control feature added.", vbOKOnly, "Success"
 Application.ScreenUpdating = True
+
 End Sub
 
 Function IsWorkBookOpen(wbPath As String)
