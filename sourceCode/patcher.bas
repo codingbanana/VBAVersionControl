@@ -45,7 +45,9 @@ If tgtStr = "" Then
 End If
 tgtStr = ThisWorkbook.Sheets(1).Cells(2, 2).Value
 
-If ThisWorkbook.Sheets(1).Shapes("Check Box 5").ControlFormat.Value = 1 Then
+If ThisWorkbook.Sheets(1).CheckBoxes("Check Box 5").Value = 1 Then
+'equivalent:
+'If ThisWorkbook.Sheets(1).Shapes("Check Box 5").ControlFormat.Value = 1 Then
     tgtStr_dup = fso.getparentfoldername(tgtStr) & "\" & fso.getbasename(tgtStr) & "_dev." & fso.getExtensionName(tgtStr)
     If IsWorkBookOpen(tgtStr) = True Then
         Workbooks(Dir(tgtStr)).SaveCopyAs tgtStr_dup
