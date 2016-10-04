@@ -36,17 +36,29 @@ Sub Add_VC()
 'ref:http://www.cpearson.com/excel/vbe.aspx
 
 Application.ScreenUpdating = False
+Dim fso As New FileSystemObject
 Dim tgtStr As String
+
 tgtStr = ThisWorkbook.Sheets(1).Cells(2, 2).Value
 If tgtStr = "" Then
     Call Select_Tgt
 End If
 tgtStr = ThisWorkbook.Sheets(1).Cells(2, 2).Value
 
-If IsWorkBookOpen(tgtStr) = True Then
-    Set tgtWB = Workbooks(Dir(tgtStr))
+If ThisWorkbook.Sheets(1).Shapes("Check Box 5").ControlFormat.Value = 1 Then
+    tgtStr_dup = fso.getparentfoldername(tgtStr) & "\" & fso.getbasename(tgtStr) & "_dev." & fso.getExtensionName(tgtStr)
+    If IsWorkBookOpen(tgtStr) = True Then
+        Workbooks(Dir(tgtStr)).SaveCopyAs tgtStr_dup
+    Else
+        fso.CopyFile tgtStr, tgtStr_dup
+    End If
+    Set tgtWB = Workbooks.Open(tgtStr_dup)
 Else
-    Set tgtWB = Workbooks.Open(tgtStr)
+    If IsWorkBookOpen(tgtStr) = True Then
+        Set tgtWB = Workbooks(Dir(tgtStr))
+    Else
+        Set tgtWB = Workbooks.Open(tgtStr)
+    End If
 End If
 
 srcPath = ThisWorkbook.Path & "\sourceCode\"
@@ -72,7 +84,7 @@ With tgtWB.VBProject.VBComponents
 End With
 
 tgtWB.Save
-MsgBox "Version Control feature added.", vbOKOnly, "Success"
+MsgBox "Version Control module added." & Chr(13) & "Now Manually add MS VBA Ext 5.3 library in VBE.", vbOKOnly, "Success"
 Application.ScreenUpdating = True
 
 End Sub
